@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // const compose = (f, g) => x => f(g(x))
+    function compose(f, g) {
+        return function (x) {
+            return f(g(x))
+        }
+    }
+
+    const f = x => x + 1;
+    const g = x => x * 2;
+    const fg = compose(f, g);
+    fg(1) //4
+    console.log(fg(1))
+    // function compose(...fns) {
+    //     return function (x) { fns.reduceRight((arg, fn) => {fn(arg)}, x)
+    //     }
+    // }
+    //
+    // const f = x => x + 2;
+    // const g = x => x * 3;
+    // const fg = compose(f, g);
+    // console.log(fg(2))
+</script>
+</body>
+</html>

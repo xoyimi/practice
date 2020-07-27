@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>change tab</title>
+    <style>
+        ul {
+            display: flex;
+            position: absolute;
+            justify-content: space-between;
+            margin: 0;
+            padding: 0;
+            width: 300px;
+            max-width: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            list-style: none;
+            border-bottom: 2px solid #ccc;
+        }
+
+        li {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        ul::after {
+            content: "";
+            position: absolute;
+            height: 3px;
+            width: calc(var(--slider-width) *1px);
+            left:  calc(var(--slider-left) *1px);
+            background-color: pink;
+            border-radius: 6px;
+            bottom: -3px;
+            transition: all .2s;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li class="tab">张杰</li>
+    <li class="tab">周杰伦</li>
+    <li class="tab">林俊杰</li>
+    <li class="tab">薛之谦</li>
+    <li class="tab">你</li>
+</ul>
+<script>
+    let tabItems = document.querySelectorAll('.tab');
+
+    for (let i = 0; i < tabItems.length; i++) {
+        tabItems[i].addEventListener('click', function (e) {
+            document.documentElement.style.setProperty('--slider-width',e.target.clientWidth)
+            document.documentElement.style.setProperty('--slider-left',e.target.offsetLeft)
+        })
+    }
+</script>

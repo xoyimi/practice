@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+    function Foo() {
+    }
+
+    Foo.prototype = {x: 1};
+    let fooSon = new Foo();
+    console.log(fooSon.x); //输出：1
+    Foo.prototype = {x: 2};
+    console.log(fooSon.x); //输出：2
+
+    function Con() {
+    }
+
+    Con.prototype.x = 2;
+    let conSon = new Con();
+    // Con.prototype = {x: 1};
+    console.log(conSon.__proto__===Con.prototype)
+    console.dir(conSon)
+    console.log(conSon.x); //输出：2
+</script>

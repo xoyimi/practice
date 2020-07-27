@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CH">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    .container {
+      position: relative;
+      width: 200px;
+      height: 40px;
+      border: 1px solid #eee;
+      background-color: #e8e8e8;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+    .container::after {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+      content: attr(data-text);
+      line-height: 40px;
+      font-size: 14px;
+    }
+    .front-bg {
+      position: absolute;
+      height: 100%;
+      width: 0;
+      background-color: lightblue;
+    }
+    .slider {
+      position: absolute;
+      z-index: 1;
+      height: 40px;
+      width: 40px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      will-change: transform;
+    }
+    .slider::after {
+      content: '>>';
+      font-size: 14px;
+      line-height: 40px;
+      display: block;
+      text-align: center;
+    }
+  </style>
+  <body>
+    <div data-text="滑动解锁" class="container">
+      <div class="front-bg"></div>
+      <div class="slider"></div>
+    </div>
+
+    <script>
+      //一.定义了一个获取元素的方法
+      function $(selector) {
+        return document.querySelector(selector)
+      }
+      //二.获取需要的DOM元素
+      //容器
+      let container = $('.container'),
+        //滑块
+        slider = $('.slider'),
+        //前置背景颜色
+        frontBg = $('.front-bg'),
+        //是否解锁成功的标志，默认不成功
+        isSuccess = false,
+        //滑块成功的距离
+        distance = container.clientWidth - slider.offsetWidth,
+        //滑块初始位置
+        originX
+      //给滑块添加touchstart事件
+      slider.addEventListener('touchstart', touchstartHandler)
+      //滑块touchstart事件实现
+      function touchstartHandler(e) {
+        //清除之前动画
+        if (slider.style.transition || frontBg.style.transition) {
+          slider.style.transition = ''
+          frontBg.style.transition = ''
+        }
+        //记录touch位置
+        originX = e.touches[0].pageX
+        //添加touchmove事件 以计算move距离
+        document.addEventListener('touchmove', touchmoveHandler, {
+          //设置passive:false,解决浏览器因e.preventDefault报错
+          passive: false,
+        })
+
+        //添加touchend事件
+        document.addEventListener('touchend', touchendHandler)
+      }
+      //touchmove事件实现
+      function touchmoveHandler(e) {
+        let offsetX = e.touches[0].pageX - originX
+        //判断是否解锁成功
+        if (offsetX > distance) success()
+        //如果滑到了起点的左侧，就将它重置为起点位置
+        else if (offsetX < 0) {
+          offsetX = 0
+        }
+        slider.style.transform = `translate3d(${offsetX}px,0,0)`
+        frontBg.style.width = offsetX + 'px'
+        //阻止默认事件，解决slider拖动卡顿
+        e.preventDefault()
+      }
+      //touchend事件实现
+      function touchendHandler() {
+        slider.style.transition = 'all .3s'
+        frontBg.style.transition = 'all .3s'
+        if (!isSuccess) {
+          //slider回到初始位置方法
+          slider.style.transform = ''
+          frontBg.style.width = ''
+        }
+      }
+      //滑块解锁成功事件
+      function success() {
+        isSuccess = true
+        offsetX = distance
+        frontBg.style.backgroundColor = 'lightgreen'
+        setTimeout(() => {
+          container.setAttribute('data-text', '解锁成功')
+        }, 100)
+        slider.removeEventListener('touchstart', touchstartHandler)
+        document.removeEventListener('touchmove', touchmoveHandler)
+      }
+    </script>
+  </body>
+</html>

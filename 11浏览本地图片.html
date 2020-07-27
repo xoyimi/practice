@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CH">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="file-input" type="file" accept="image/*" />
+    asd
+    <div id="dropbox"></div>
+    <script>
+      var inputElement = document.getElementById('file-input')
+      inputElement.addEventListener('change', handleFiles, false)
+      function handleFiles(e) {
+        var fileList = this.files
+        var img = document.createElement('img')
+        img.src = window.URL.createObjectURL(fileList[0])
+        document.body.appendChild(img)
+      }
+    </script>
+  </body>
+</html>

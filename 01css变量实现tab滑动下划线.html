@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CH">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Document</title>
+</head>
+<style>
+    body {
+        margin: 0 auto;
+        width: 300px;
+    }
+
+
+    .wrapper {
+        position: relative;
+        display: flex;
+        height: 100%;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #ccc;
+        background-color: #fff;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .item {
+        color: #717678;
+        padding: 10px 0;
+    }
+
+    ul::before,
+    ul::after {
+        position: absolute;
+        content: '';
+        left: calc(var(--offset-left, -999) * 1px);
+        width: calc(var(--client-width, 0) * 1px);
+        color: #2a80eb;
+    }
+
+    ul::after {
+        border-bottom: solid 3px;
+        bottom: -2px;
+        transition-property: width, left;
+        transition-duration: 0.2s;
+    }
+
+    ul::before {
+        height: calc(var(--client-height) * 1px);
+        background-color: currentColor;
+        mix-blend-mode: overlay;
+    }
+</style>
+<body>
+<ul class="wrapper"></ul>
+<script>
+    function $(elem) {
+        return document.querySelector(elem)
+    }
+
+    const list = ['起点读书', '阅文', 'QQ阅读', '红袖添香']
+    for (let i = 0; i < 4; i++) {
+        $(
+            '.wrapper'
+        ).innerHTML += `<a href='javascript:' class='item'>${list[i]}</a>`
+    }
+    document.body.addEventListener('click', function (event) {
+        let target = event.target
+        target.parentElement.style.setProperty(
+            '--client-width',
+            target.clientWidth
+        )
+        target.parentElement.style.setProperty(
+            '--offset-left',
+            target.offsetLeft
+        )
+        target.parentElement.style.setProperty(
+            '--client-height',
+            target.clientHeight
+        )
+    })
+</script>
+</body>
+</html>
