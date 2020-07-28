@@ -9,11 +9,14 @@
     <title>Document</title>
   </head>
   <body>
-    <style type="text/css">
+    <style >
+      html{
+        touch-action: none;
+      }
       #box {
         position: absolute;
-        left: 100px;
-        top: 100px;
+        left: 0px;
+        top: 0px;
         padding: 5px;
         background: #f0f3f9;
         font-size: 12px;
@@ -30,8 +33,8 @@
         cursor: move;
       }
       #content {
-        width: 420px;
-        height: 250px;
+        width: 42px;
+        height: 25px;
         padding: 10px 5px;
       }
     </style>
@@ -44,8 +47,10 @@
         </div>
       </div>
     </div>
-    <script src="./libs/drag.js"></script>
-    <script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.3.4/vconsole.min.js"></script>
+    <script type="module">
+      new VConsole()
+      import startDrag from "/libs/drag";
       let oBox = document.getElementById('box')
       let oBar = document.getElementById('bar')
       startDrag(oBar, oBox)

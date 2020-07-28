@@ -1,60 +1,50 @@
-var params = {
-  left: 0,
-  top: 0,
-  currentX: 0,
-  currentY: 0,
-  flag: false,
-}
-//获取相关CSS属性
-function getCss(o, key) {
-  return document.defaultView.getComputedStyle(o, 'false')[key]
-}
-
 //拖拽的实现
-function startDrag(bar, target, callback) {
-  if (getCss(target, 'left') !== 'auto') {
-    params.left = getCss(target, 'left')
-  }
-  if (getCss(target, 'top') !== 'auto') {
-    params.top = getCss(target, 'top')
-  }
-  //o是移动对象
-  bar.addEventListener('touchstart', (e) => {
-    params.flag = true
-    params.currentX = e.touches[0].pageX
-    params.currentY = e.touches[0].pageY
-  })
+export default function startDrag(bar, target, callback) {
+    let left = 0,
+        top = 0,
+        currentX = 0,
+        currentY = 0,
+        flag = false
 
-  document.addEventListener('touchend', () => {
-    params.flag = false
-    if (getCss(target, 'left') !== 'auto') {
-      params.left = getCss(target, 'left')
+
+    if (_getCss(target, 'left') !== 'auto') {
+        left = _getCss(target, 'left')
     }
-    if (getCss(target, 'top') !== 'auto') {
-      params.top = getCss(target, 'top')
+    if (_getCss(target, 'top') !== 'auto') {
+        top = _getCss(target, 'top')
     }
-  })
+    //o是移动对象
+    bar.addEventListener('pointerdown', (e) => {
+        flag = true
+        currentX = e.pageX
+        currentY = e.pageY
+    })
 
-  document.addEventListener('touchmove', (e) => {
-    if (params.flag) {
-      var nowX = e.touches[0].clientX,
-        nowY = e.touches[0].clientY
-      var disX = nowX - params.currentX,
-        disY = nowY - params.currentY
-      target.style.left = parseInt(params.left) + disX + 'px'
-      target.style.top = parseInt(params.top) + disY + 'px'
+    document.addEventListener('pointerup', () => {
+        flag = false
+        if (_getCss(target, 'left') !== 'auto') {
+            left = _getCss(target, 'left')
+        }
+        if (_getCss(target, 'top') !== 'auto') {
+            top = _getCss(target, 'top')
+        }
+    })
 
-      if (typeof callback == 'function') {
-        callback(
-          (parseInt(params.left) || 0) + disX,
-          (parseInt(params.top) || 0) + disY
-        )
-      }
+    document.addEventListener('pointermove', (e) => {
+        if (flag) {
+            let nowX = e.clientX,
+                nowY = e.clientY
+            let disX = nowX - currentX,
+                disY = nowY - currentY
+            target.style.left = parseInt(left) + disX + 'px'
+            target.style.top = parseInt(top) + disY + 'px'
+            e.preventDefault()
+        }
+    }, {passive: false})
+}
 
-      if (event.preventDefault) {
-        event.preventDefault()
-      }
-      return false
-    }
-  }, { passive: false })
+//获取相关CSS属性
+function _getCss(element, key) {
+    //如今使用document.defaultView 完全没必要 直接使用 getComputedStyle即可
+    return document.defaultView.getComputedStyle(element, null)[key]
 }
