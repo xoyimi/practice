@@ -7,16 +7,9 @@
   </head>
   <body>
     <script>
-      void (async function () {
-        //   let url =
-        //       'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits'
-        //     let response = await fetch(url)
-        //     let commits = await response.json() // 读取 response body，并将其解析为 JSON
-        //     console.log(commits)
-      })()
-      fetch(
-        'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits'
-      ).then((response) => console.log(response.json()))
+      let promise  = fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits').then((e)=>{
+        console.log(e)
+      })
     </script>
   </body>
 </html>
