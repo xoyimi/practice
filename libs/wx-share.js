@@ -1,7 +1,7 @@
 
 import Axios from "axios"
 import wx from 'jweixin-module'
-function wxShare(title, desc, link, imgUrl, cb) {
+export default function (title, desc, link, imgUrl, cb) {
     if (navigator.userAgent.indexOf('MicroMessenger') === -1) {
         console.log('非微信网页环境')
         return
@@ -32,7 +32,9 @@ function wxShare(title, desc, link, imgUrl, cb) {
         })
         //处理验证成功后的信息
         wx.ready(() => {
-            console.log('wx.ready')
+          console.log('wx.ready')
+            //播放背景音乐
+            document.querySelector('#bgm')&&(let bgm = document.querySelector('#bgm'),bgm.play())
            if( document.querySelector('#audio')) document.querySelector('#audio').play()
             wx.updateTimelineShareData({ //分享到朋友圈
                 title: shareConfig.title,
@@ -50,4 +52,3 @@ function wxShare(title, desc, link, imgUrl, cb) {
 
 }
 
-export default wxShare
